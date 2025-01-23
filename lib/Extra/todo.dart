@@ -16,6 +16,7 @@ class Todo extends StatefulWidget {
 class _TodoState extends State<Todo> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
   List<User> users=List.empty(growable:true);
   int selectedIndex =-1;
   @override
@@ -73,6 +74,26 @@ class _TodoState extends State<Todo> {
               ],
             ),
             SizedBox(height: 30,),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: searchController,
+                    decoration: InputDecoration(
+                      labelText: "Search here",
+                    ),
+                  ),
+                ),
+                InkWell( onTap: () {
+                 List<User> filterUsers =[];
+                  setState(() {
+                    String data =searchController.toString().toLowerCase();
+                    filterUsers= users.where((element) { return element.name.toLowerCase().contains(data);}) .toList();
+                  });
+                } ,child: Icon(Icons.search))
+
+              ],
+            ),
             users.isEmpty? Text("List is Empty ...",style: TextStyle(fontSize: 22),):
             Expanded(
               child: ListView.builder(
